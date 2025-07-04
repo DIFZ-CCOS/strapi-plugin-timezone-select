@@ -1,15 +1,13 @@
-import { getTranslation } from './utils/getTranslation';
-import { PLUGIN_ID } from './pluginId';
 import { Initializer } from './components/Initializer';
-import { PluginIcon } from './components/PluginIcon';
 import TimezoneSelectIcon from './components/TimezoneSelectIcon';
+import { PLUGIN_ID } from './pluginId';
+import { getTranslation } from './utils/getTranslation';
 
 export default {
   register(app: any) {
-
     app.customFields.register({
       name: 'timezone',
-      pluginId: PLUGIN_ID,
+      plugnId: PLUGIN_ID,
       type: 'string',
       icon: TimezoneSelectIcon,
       intlLabel: {
@@ -18,26 +16,10 @@ export default {
       },
       intlDescription: {
         id: getTranslation('description'),
-        defaultMessage: 'Select any time zone',
+        defaultMessage: 'Select a time zone',
       },
       components: {
         Input: async () => import('./components/TimezoneSelect'),
-      },
-      options: {},
-    });
-
-
-    app.addMenuLink({
-      to: `plugins/${PLUGIN_ID}`,
-      icon: PluginIcon,
-      intlLabel: {
-        id: `${PLUGIN_ID}.plugin.name`,
-        defaultMessage: PLUGIN_ID,
-      },
-      Component: async () => {
-        const { App } = await import('./pages/App');
-
-        return App;
       },
     });
 

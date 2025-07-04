@@ -5,12 +5,14 @@
   "exports": {
     "./package.json": "./package.json",
     "./strapi-admin": {
+      "types": "./dist/admin/src/index.d.ts",
       "source": "./admin/src/index.ts",
       "import": "./dist/admin/index.mjs",
       "require": "./dist/admin/index.js",
       "default": "./dist/admin/index.js"
     },
     "./strapi-server": {
+      "types": "./dist/server/src/index.d.ts",
       "source": "./server/src/index.ts",
       "import": "./dist/server/index.mjs",
       "require": "./dist/server/index.js",
@@ -29,40 +31,39 @@
     "test:ts:back": "run -T tsc -p server/tsconfig.json"
   },
   "dependencies": {
-    "@strapi/design-system": "^2.0.0-rc.18",
-    "@strapi/icons": "^2.0.0-rc.18",
-    "moment-timezone": "^0.5.47",
-    "react-intl": "^7.1.6"
+    "@strapi/design-system": "2.0.0-beta.6",
+    "@strapi/icons": "2.0.0-beta.6",
+    "react-intl": "^7.1.11"
   },
   "devDependencies": {
     "@strapi/sdk-plugin": "^5.3.2",
-    "@strapi/strapi": "^5.11.0",
-    "@strapi/typescript-utils": "^5.11.0",
-    "@types/react": "^19.0.10",
-    "@types/react-dom": "^19.0.4",
-    "prettier": "^3.5.3",
+    "@strapi/strapi": "^5.17.0",
+    "@strapi/typescript-utils": "^5.17.0",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "prettier": "^3.6.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.30.0",
-    "styled-components": "^6.1.15",
-    "typescript": "^5.8.2"
+    "react-router-dom": "^6.30.1",
+    "styled-components": "^6.1.19",
+    "typescript": "^5.8.3"
   },
   "peerDependencies": {
     "@strapi/sdk-plugin": "^5.3.2",
-    "@strapi/strapi": "^5.11.0",
+    "@strapi/strapi": "^5.17.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.30.0",
-    "styled-components": "^6.1.15"
+    "react-router-dom": "^6.30.1",
+    "styled-components": "^6.1.19"
   },
   "strapi": {
     "kind": "plugin",
-    "name": "strapi-plugin-timezone-select",
-    "displayName": "timezone-select",
-    "description": "A strapi custom field for selecting any timezone based on the moment.js timezones"
+    "name": "timezone-select",
+    "displayName": "Timezone Select",
+    "description": "A Strapi custom field to select a Olson/IANA time zone (e.g. Africa/Ndjamena America/New_York, Asia/Bangkok, Europe/Paris, Oceania/Sydney)"
   },
   "name": "strapi-plugin-timezone-select",
-  "description": "A strapi custom field for selecting any timezone based on the moment.js timezones",
+  "description": "A Strapi custom field to select a Olson/IANA time zone (e.g. Africa/Ndjamena America/New_York, Asia/Bangkok, Europe/Paris, Oceania/Sydney)",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -72,13 +73,5 @@
     "url": "https://github.com/play14team/strapi-plugin-timezone-select/issues"
   },
   "homepage": "https://github.com/play14team/strapi-plugin-timezone-select#readme",
-  "author": "Cédric PONTET <cedric.pontet@gmail.com>",
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "@swc/core",
-      "core-js-pure",
-      "esbuild",
-      "sharp"
-    ]
-  }
+  "author": "Cédric PONTET <cedric.pontet@gmail.com>"
 }

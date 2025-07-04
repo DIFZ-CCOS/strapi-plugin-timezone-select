@@ -1,50 +1,68 @@
-import { Field, SingleSelect, SingleSelectOption } from '@strapi/design-system';
-import { useEffect, useState } from 'react';
+import { Combobox, ComboboxOption, Field } from '@strapi/design-system';
+import { Clock } from '@strapi/icons';
+import { useField, type FieldValue, type InputProps } from '@strapi/strapi/admin';
+import React from 'react';
 import { useIntl } from 'react-intl';
-import moment from 'moment-timezone';
+import { getTranslation } from '../utils/getTranslation';
 
-export const TimezoneSelect = ({
-    value,
-    onChange,
+const timezones = Intl.supportedValuesOf('timeZone'); // Outputs: ["Africa/Abidjan", "Africa/Accra", ...]
+const currentTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+type TimezoneSelectProps = InputProps & FieldValue;
+
+const TimezoneSelect = React.forwardRef<HTMLDivElement, TimezoneSelectProps>(
+  ({
     name,
-    intlLabel,
+    value,
+    hint,
+    required,
+    disabled,
     error,
-    }: {
-      value: string | null;
-      onChange: (name: string, value: string | null) => void;
-      name: string;
-      intlLabel: { id: string; defaultMessage: string };
-      error?: string;
-    }) => {
-  const { formatMessage } = useIntl();
-  const label = formatMessage(intlLabel);
-  const errorMessage = error ? formatMessage({ id: error, defaultMessage: error }) : '';
+  }, forwardedRef) => {
+    const { formatMessage } = useIntl();
+    const field = useField(name);
 
-  const [timezones, setTimezones] = useState<Array<{ value: string; label: string }>>([]);
-
-  useEffect(() => {
-    const zones = moment.tz.names().map((zone) => ({
-      value: zone,
-      label: `${zone} (${moment.tz(zone).format('Z')})`,
-    }));
-    setTimezones(zones.sort((a, b) => a.label.localeCompare(b.label)));
-  }, []);
-
-  return (
-    <Field.Root error={errorMessage} name={name}>
-      <Field.Label>{label}</Field.Label>
-      <SingleSelect 
-        onChange={(timezone: string) => onChange(name, timezones.find((tz) => tz.value === timezone)?.value || null)}
-        onClear={() => onChange(name, null)}
-        value={value || ''}
+    return (
+      <Field.Root
+        id={name}
+        name={name}
+        error={error}
+        required={required}
+        hint={hint}
       >
-        {timezones.map(({ value, label }) => (
-          <SingleSelectOption key={value} value={value}>
-            {label}
-          </SingleSelectOption>
-        ))}
-      </SingleSelect>
-      <Field.Error />
-    </Field.Root>
-  );
-};
+        <Field.Label>
+          {name}
+        </Field.Label>
+        <Combobox
+          label={formatMessage({
+            id: getTranslation('label'),
+            defaultMessage: 'Select a time zone',
+          })}
+          placeholder={formatMessage({
+            id: getTranslation('placeholder'),
+            defaultMessage: 'Select a time zone or start typing the name of a city',
+          })}
+          aria-label={formatMessage({
+            id: getTranslation('aria-label'),
+            defaultMessage: 'Select a time zone',
+          })}
+          aria-disabled={disabled}
+          disabled={disabled}
+          startIcon={<Clock />}
+          value={value ?? currentTimeZone}
+          clearLabel="Clear"
+          onClear={() => { field.onChange(name, "") }}
+          onChange={(timezone: string) => { field.onChange(name, timezone) }}
+          autocomplete={{ type: 'list', filter: 'contains' }}
+        >
+          {timezones.map((timezone) => (
+            <ComboboxOption key={timezone} value={timezone}>{timezone}</ComboboxOption>
+          ))}
+        </Combobox>
+        <Field.Error />
+        <Field.Hint />
+      </Field.Root>
+    )
+  })
+
+export default TimezoneSelect;
